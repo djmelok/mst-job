@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
+p,
+h4 {
+    margin: 0;
+}
+
+
+button,
+select {
+    cursor: pointer;
+}
+
+input,
+button,
+select {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+input:focus,
+button:focus,
+select:focus {
+    outline: none;
+    border: 1px solid #7b7b7b;
+}
+
+input,
+select {
+    padding: 12px;
+}
