@@ -5,73 +5,28 @@
       "lastName": "Perkins",
       "email": "jack@gmail.com",
       "age": "31",
-      "phone": "+7(978)001-01-01",
+      "phone": "+7(915)001-01-01",
       "owner": "admin@gmail.com"
     },
     {
       "id": 1597709193582,
-      "firstName": "Jack",
-      "lastName": "Perkins",
-      "email": "jack@gmail.com",
-      "age": "31",
-      "phone": "+7(978)001-01-01",
-      "owner": "admin@gmail.com"
-    },
-    {
-      "id": 1597709193583,
-      "firstName": "Jack",
-      "lastName": "Perkins",
-      "email": "jack@gmail.com",
-      "age": "31",
-      "phone": "+7(978)001-01-01",
-      "owner": "admin@gmail.com"
-    },
-    {
-      "id": 1597709193585,
-      "firstName": "Jack4",
-      "lastName": "Perkins",
-      "email": "jack@gmail.com",
-      "age": "31",
-      "phone": "+7(978)001-01-01",
-      "owner": "admin@gmail.com"
-    },
-    {
-      "id": 1597709193584,
-      "firstName": "Jack5",
-      "lastName": "Perkins",
-      "email": "jack@gmail.com",
-      "age": "31",
-      "phone": "+7(978)001-01-01",
-      "owner": "admin@gmail.com"
-    },
-    {
-      "id": 1597709193587,
-      "firstName": "Jack2",
-      "lastName": "Perkins",
-      "email": "jack@gmail.com",
-      "age": "31",
-      "phone": "+7(978)001-01-01",
-      "owner": "admin@gmail.com"
-    },
-    {
-      "id": 1597709193588,
-      "firstName": "Jack1",
-      "lastName": "Perkins111",
-      "email": "jack@gmail.com",
-      "age": "31",
-      "phone": "+7(978)001-01-01",
+      "firstName": "Adam",
+      "lastName": "Wenston",
+      "email": "adam@gmail.com",
+      "age": "24",
+      "phone": "+91(78)001-01-01",
       "owner": "admin@gmail.com"
     }
   ],
   "registered_users": [{
       "id": 1,
       "email": "admin@gmail.com",
-      "password": "111111"
+      "password": "123456"
     },
     {
       "id": 2,
       "email": "user@mail.ru",
-      "password": "222222"
+      "password": "123456"
     }
   ]
 }
