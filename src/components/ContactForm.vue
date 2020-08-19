@@ -68,7 +68,8 @@ export default {
       this.edit_mode = false;
       this.editUser(this.user);
     },
-    sumbitDeleteUser() {
+    sumbitDeleteUser(e) {
+      e.preventDefault();
       this.deleteUser(this.user);
     },
   },

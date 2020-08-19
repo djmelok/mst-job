@@ -44,8 +44,7 @@ export default {
           this.updateLoginStatus();
           this.updateLoginName();
           this.$router.push("/");
-        })
-        .catch((e) => alert(e));
+        });
     },
     async checkRegUsers(user) {
       await axios
@@ -55,8 +54,7 @@ export default {
             throw Error("This user already exists.");
           }
           this.updateRegUsers(user);
-        })
-        .catch((e) => alert(e));
+        });
     },
     submitSignUpUser() {
       if (!this.email || !this.password || !this.password_again) {

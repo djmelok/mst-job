@@ -1,35 +1,31 @@
 <template>
   <div class="main_wrapper">
-    <LoginForm v-if="!getLogin" />
-    <template v-else>
-      <AddContactToForm />
-      <div class="main_body">
-        <div class="main_body__header">
-          <SearchContact />
-          <UserInfo />
+    <AddContactToForm />
+    <div class="main_body">
+      <div class="main_body__header">
+        <SearchContact />
+        <UserInfo />
+      </div>
+      <div class="table" v-if="!getUsers.length == 0">
+        <div class="table__header">
+          <p>First name</p>
+          <p>Last name</p>
+          <p>Email</p>
+          <p>Age</p>
+          <p>Phone</p>
         </div>
-        <div class="table" v-if="!getUsers.length == 0">
-          <div class="table__header">
-            <p>First name</p>
-            <p>Last name</p>
-            <p>Email</p>
-            <p>Age</p>
-            <p>Phone</p>
-          </div>
-          <div class="table__body">
-            <ContactForm v-for="user in getUsers" :key="user.id" :user="user" />
-          </div>
-        </div>
-        <div class="no_contacts" v-else>
-          <p>No contacts.</p>
+        <div class="table__body">
+          <ContactForm v-for="user in getUsers" :key="user.id" :user="user" />
         </div>
       </div>
-    </template>
+      <div class="no_contacts" v-else>
+        <p>No contacts.</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import LoginForm from "../components/LoginForm.vue";
 import UserInfo from "../components/UserInfo.vue";
 import SearchContact from "../components/SearchContact.vue";
 import AddContactToForm from "../components/AddContactToForm.vue";
@@ -39,7 +35,6 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "App",
   computed: {
-    ...mapGetters(["getLogin"]),
     ...mapGetters(["getUsers"]),
   },
   methods: {
@@ -53,7 +48,6 @@ export default {
     this.getUsersFromApi();
   },
   components: {
-    LoginForm,
     UserInfo,
     SearchContact,
     AddContactToForm,

@@ -4,7 +4,7 @@
     <form>
       <input required v-model="first_name" type="text" placeholder="First name" />
       <input required v-model="last_name" type="text" placeholder="Last name" />
-      <input required v-model="email" type="text" placeholder="Email" />
+      <input required v-model="email" type="email" placeholder="Email" />
       <input required v-model="age" type="text" placeholder="Age" />
       <input required v-model="phone" type="text" placeholder="Phone" />
       <button type="submit" @click="submitAddContact">
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     ...mapActions(["addUser"]),
-    submitAddContact(e) {
+    submitAddContact() {
       if (
         !this.first_name ||
         !this.last_name ||
@@ -44,7 +44,6 @@ export default {
         return;
       }
 
-      e.preventDefault();
       this.addUser({
         id: Date.now(),
         firstName: this.first_name,

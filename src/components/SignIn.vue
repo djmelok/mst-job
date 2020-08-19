@@ -43,9 +43,7 @@ export default {
           this.updateLoginStatus();
           this.updateLoginName();
           this.getUsersFromApi();
-        })
-        .catch((e) => {
-          alert(e);
+          this.$router.push("/");
         });
     },
     submitLoginUser(e) {

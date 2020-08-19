@@ -8,10 +8,10 @@
       <option value="age">Age</option>
       <option value="phone">Phone</option>
     </select>
-    <input type="text" v-model="search_value" />
-    <button @click="sumbitSearch(search_value, selected)">
+    <div class="search_input">
+      <input type="text" v-model="search_value" />
       <i class="material-icons">search</i>
-    </button>
+    </div>
   </form>
 </template>
 
@@ -28,9 +28,10 @@ export default {
   computed: {},
   methods: {
     ...mapMutations(["searchContect"]),
-    sumbitSearch(value, selected) {
-      selected = String(selected);
-      this.searchContect({ value, selected });
+  },
+  watch: {
+    search_value: function (value) {
+      this.searchContect({ value, selected: this.selected });
     },
   },
 };
@@ -42,12 +43,19 @@ export default {
   align-items: center;
 }
 
-.search_area input {
+.search_input {
   margin: 0 6px;
+  position: relative;
 }
 
-.search_area button {
-  height: 100%;
-  padding: 0 12px;
+.search_input input {
+  padding-right: 30px;
+}
+
+.search_input i {
+  transform: translateY(-50%);
+  position: absolute;
+  top: 50%;
+  right: 4px;
 }
 </style>

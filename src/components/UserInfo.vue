@@ -2,7 +2,8 @@
   <div class="user">
     <div class="user_name">
       <i class="material-icons">account_circle</i>
-      {{getLoginName[0].toUpperCase() + getLoginName.slice(1).split("@")[0]}}
+      <!-- {{getLoginName[0].toUpperCase() + getLoginName.slice(1).split("@")[0]}} -->
+      {{getLoginName}}
     </div>
     <form>
       <button @click="submitLogoutUser" type="submit">
@@ -26,6 +27,7 @@ export default {
       delete localStorage.login_status;
       delete localStorage.login_name;
       this.updateLoginStatus();
+      this.$router.push("/sign_in");
     },
   },
 };
