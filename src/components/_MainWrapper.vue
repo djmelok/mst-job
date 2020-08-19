@@ -88,17 +88,25 @@ export default {
   width: 18%;
 }
 
+.table__header p:not(:last-child) {
+  border-right: 1px solid #b4b4b4;
+}
+
 .table__body {
   overflow: auto;
   max-height: 80vh;
 }
 
-.table__body div:nth-child(even) {
+.table__body form:nth-child(even) {
   background: #efefef;
 }
 
-.table__body div:last-child {
+.table__body form:last-child {
   border-radius: 0 0 6px 6px;
+}
+
+.table__body form:last-child {
+  margin-bottom: 0;
 }
 
 .no_contacts {

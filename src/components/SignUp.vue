@@ -1,11 +1,15 @@
 <template>
   <div class="sign_up">
     <h2>Registration</h2>
-    <form>
-      <input required v-model="email" type="email" placeholder="Email" />
-      <input required v-model="password" type="password" placeholder="Password" />
-      <input required v-model="password_again" type="password" placeholder="Password again" />
-      <button type="submit" @click="submitSignUpUser">
+    <div class="flash_error" v-if="error_msg">
+      <span>{{error_msg}}</span>
+      <i @click="error_msg = null" class="material-icons">close</i>
+    </div>
+    <form @submit.prevent="submitSignUpUser">
+      <input v-model.trim="email" type="text" placeholder="Email" />
+      <input v-model.trim="password" type="password" placeholder="Password" />
+      <input v-model.trim="repeat_password" type="password" placeholder="Repeat password" />
+      <button type="submit">
         Sign Up
         <i class="material-icons">login</i>
       </button>
@@ -17,14 +21,21 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import { email, required, minLength, sameAs } from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      password_again: "",
+      repeat_password: "",
+      error_msg: "",
     };
+  },
+  validations: {
+    email: { required, email },
+    password: { required, minLength: minLength(6) },
+    repeat_password: { sameAsPassword: sameAs("password") },
   },
   computed: {
     ...mapGetters(["getLogin"]),
@@ -38,7 +49,6 @@ export default {
       await axios
         .post("http://localhost:3000/registered_users", user)
         .then((response) => {
-          console.log("AXIOS: ", response.data);
           localStorage.login_status = true;
           localStorage.login_name = response.data.email;
           this.updateLoginStatus();
@@ -51,20 +61,27 @@ export default {
         .get("http://localhost:3000/registered_users?email=" + user.email)
         .then((response) => {
           if (response.data.length != 0) {
-            throw Error("This user already exists.");
+            this.error_msg = "This user already exists.";
+            return;
           }
           this.updateRegUsers(user);
         });
     },
     submitSignUpUser() {
-      if (!this.email || !this.password || !this.password_again) {
-        alert("Please fill in all fields");
-        return;
-      } else if (this.password != this.password_again) {
-        alert("Password mismatch.");
-        return;
-      } else if (this.password.length < 6) {
-        alert("Short password (more than 6 characters)");
+      this.error_msg = "";
+
+      if (this.$v.$invalid) {
+        if (!this.$v.email.required || !this.$v.password.required) {
+          this.error_msg = "Email and password fields is required.";
+        } else if (!this.$v.email.email) {
+          this.error_msg = "Incorrect email field.";
+        } else if (!this.$v.password.minLength) {
+          this.error_msg = `Password must be more than ${this.$v.password.$params.minLength.min} characters.`;
+        } else if (!this.$v.repeat_password.sameAs) {
+          this.error_msg = "Passwords must be identical.";
+        }
+
+        this.$v.$touch();
         return;
       }
 
@@ -86,6 +103,8 @@ export default {
 }
 
 form {
+  padding: 20px;
+  border: 1px solid #d8dee2;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -101,6 +120,7 @@ form button {
   align-items: center;
   justify-content: center;
   padding: 8px;
+  font-weight: bold;
 }
 
 form button i {

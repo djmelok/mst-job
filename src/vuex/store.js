@@ -38,7 +38,11 @@ const store = new Vuex.Store({
         },
         async editUser(ctx, user) {
             await axios.delete("http://localhost:3000/users/" + user.id);
-            await axios.post("http://localhost:3000/users", user);
+
+            if ((user.firstName + user.lastName + user.email + user.age + user.phone) != "") {
+                await axios.post("http://localhost:3000/users", user);
+            }
+
             await axios.get("http://localhost:3000/users?owner=" + this.state.login_name)
                 .then((response) => {
                     ctx.commit('updateUsers', response.data);

@@ -1,13 +1,17 @@
 <template>
   <div class="user_add_area">
     <h4>Add new contact:</h4>
-    <form>
-      <input required v-model="first_name" type="text" placeholder="First name" />
-      <input required v-model="last_name" type="text" placeholder="Last name" />
-      <input required v-model="email" type="email" placeholder="Email" />
-      <input required v-model="age" type="text" placeholder="Age" />
-      <input required v-model="phone" type="text" placeholder="Phone" />
-      <button type="submit" @click="submitAddContact">
+    <div class="flash_error" v-if="error_msg">
+      <span>{{error_msg}}</span>
+      <i @click="error_msg = null" class="material-icons">close</i>
+    </div>
+    <form @submit.prevent="submitAddContact">
+      <input v-model="first_name" type="text" placeholder="First name" />
+      <input v-model="last_name" type="text" placeholder="Last name" />
+      <input v-model="email" type="text" placeholder="Email" />
+      <input v-model="age" type="text" placeholder="Age" />
+      <input v-model="phone" type="text" placeholder="Phone" />
+      <button type="submit">
         <i class="material-icons">add</i>
       </button>
     </form>
@@ -16,6 +20,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { email, between, required } from "vuelidate/lib/validators";
 
 export default {
   data() {
@@ -25,7 +30,15 @@ export default {
       email: "",
       age: "",
       phone: "",
+      error_msg: "",
     };
+  },
+  validations: {
+    first_name: { required },
+    last_name: { required },
+    email: { required, email },
+    age: { required, between: between(0, 100) },
+    phone: { required },
   },
   computed: {
     ...mapGetters(["getLoginName"]),
@@ -33,14 +46,23 @@ export default {
   methods: {
     ...mapActions(["addUser"]),
     submitAddContact() {
-      if (
-        !this.first_name ||
-        !this.last_name ||
-        !this.email ||
-        !this.age ||
-        !this.phone
-      ) {
-        alert("Please fill in all fields");
+      this.error_msg = "";
+      if (this.$v.$invalid) {
+        if (
+          !this.$v.first_name.required ||
+          !this.$v.last_name.required ||
+          !this.$v.email.required ||
+          !this.$v.age.required ||
+          !this.$v.phone.required
+        ) {
+          this.error_msg = "All fields is required.";
+        } else if (!this.$v.email.email) {
+          this.error_msg = "Incorrect email field.";
+        } else if (!this.$v.age.between) {
+          this.error_msg = "Incorrect age field.";
+        }
+
+        this.$v.$touch();
         return;
       }
 
@@ -72,6 +94,8 @@ export default {
 }
 
 .user_add_area form {
+  padding: 20px;
+  border: 1px solid #d8dee2;
   display: flex;
   flex-direction: column;
 }

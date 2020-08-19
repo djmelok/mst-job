@@ -30,6 +30,9 @@ export default {
     ...mapMutations(["searchContect"]),
   },
   watch: {
+    selected: function (selected) {
+      this.searchContect({ value: this.search_value, selected });
+    },
     search_value: function (value) {
       this.searchContect({ value, selected: this.selected });
     },

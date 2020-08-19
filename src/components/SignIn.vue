@@ -1,10 +1,14 @@
 <template>
   <div class="login">
     <h2>Login</h2>
-    <form>
-      <input required v-model="email" type="email" placeholder="Email" />
-      <input required v-model="password" type="password" placeholder="Password" />
-      <button type="submit" @click="submitLoginUser">
+    <div class="flash_error" v-if="error_msg">
+      <span>{{error_msg}}</span>
+      <i @click="error_msg = null" class="material-icons">close</i>
+    </div>
+    <form @submit.prevent="submitLoginUser">
+      <input v-model.trim="email" placeholder="Email" />
+      <input v-model.trim="password" type="password" placeholder="Password" />
+      <button type="submit">
         Sign in
         <i class="material-icons">login</i>
       </button>
@@ -16,13 +20,19 @@
 <script>
 import axios from "axios";
 import { mapMutations, mapActions } from "vuex";
+import { email, required, minLength } from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
+      error_msg: "",
     };
+  },
+  validations: {
+    email: { required, email },
+    password: { required, minLength: minLength(6) },
   },
   methods: {
     ...mapMutations(["updateLoginStatus"]),
@@ -36,8 +46,10 @@ export default {
         )
         .then((response) => {
           if (response.data.length == 0) {
-            throw Error("Incorrect email or password.");
+            this.error_msg = "Incorrect email or password.";
+            return;
           }
+
           localStorage.login_status = true;
           localStorage.login_name = response.data[0].email;
           this.updateLoginStatus();
@@ -46,8 +58,22 @@ export default {
           this.$router.push("/");
         });
     },
-    submitLoginUser(e) {
-      e.preventDefault();
+    submitLoginUser() {
+      this.error_msg = "";
+      if (this.$v.$invalid) {
+        if (!this.$v.email.required || !this.$v.password.required) {
+          this.error_msg = "Email and password fields is required.";
+        } else if (!this.$v.email.email) {
+          this.error_msg = "Incorrect email field.";
+        } else if (!this.$v.password.minLength) {
+          this.error_msg = `Password must be more than ${this.$v.password.$params.minLength.min} characters.`;
+        }
+
+        this.$v.$touch();
+
+        return;
+      }
+
       this.checkLoginUser({ email: this.email, password: this.password });
     },
   },
@@ -55,6 +81,10 @@ export default {
 </script>
 
 <style scoped>
+.invalid {
+  color: red;
+}
+
 .login {
   width: 20%;
   text-align: center;
@@ -62,6 +92,8 @@ export default {
 }
 
 form {
+  padding: 20px;
+  border: 1px solid #d8dee2;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -77,6 +109,7 @@ form button {
   align-items: center;
   justify-content: center;
   padding: 8px;
+  font-weight: bold;
 }
 
 form button i {

@@ -1,20 +1,20 @@
 <template>
-  <div class="contact_info">
+  <form @submit.prevent="sumbitConfirmUser" class="contact_info">
     <template v-if="edit_mode">
       <p>
-        <input v-model="user.firstName" />
+        <input required v-model="user.firstName" type="text" placeholder="First name" />
       </p>
       <p>
-        <input v-model="user.lastName" />
+        <input required v-model="user.lastName" type="text" placeholder="Last name" />
       </p>
       <p>
-        <input v-model="user.email" />
+        <input required v-model="user.email" type="email" placeholder="Email" />
       </p>
       <p>
-        <input v-model="user.age" />
+        <input required v-model="user.age" type="text" placeholder="Age" />
       </p>
       <p>
-        <input v-model="user.phone" />
+        <input required v-model="user.phone" type="text" placeholder="Phone" />
       </p>
     </template>
     <template v-else>
@@ -24,18 +24,18 @@
       <p>{{user.age}}</p>
       <p>{{user.phone}}</p>
     </template>
-    <form>
-      <button v-if="!edit_mode" type="submit" @click="sumbitEditUser">
+    <div class="action_btns">
+      <button v-if="!edit_mode" type="button" @click="buttonEditUser">
         <i class="material-icons">edit</i>
       </button>
-      <button v-else type="submit" @click="sumbitConfirmUser">
+      <button v-else type="submit">
         <i class="material-icons">check</i>
       </button>
-      <button type="submit" @click="sumbitDeleteUser">
+      <button type="button" @click="buttonDeleteUser">
         <i class="material-icons">delete</i>
       </button>
-    </form>
-  </div>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -59,16 +59,15 @@ export default {
     ...mapActions(["editUser"]),
     ...mapActions(["deleteUser"]),
 
-    sumbitEditUser(e) {
+    buttonEditUser(e) {
       e.preventDefault();
       this.edit_mode = true;
     },
-    sumbitConfirmUser(e) {
-      e.preventDefault();
+    sumbitConfirmUser() {
       this.edit_mode = false;
       this.editUser(this.user);
     },
-    sumbitDeleteUser(e) {
+    buttonDeleteUser(e) {
       e.preventDefault();
       this.deleteUser(this.user);
     },
@@ -83,23 +82,25 @@ export default {
   text-align: center;
   margin-bottom: 8px;
   padding: 8px 12px;
+  padding-right: 0;
 }
 
 .contact_info p {
   width: 18%;
+  border-right: 1px solid #b4b4b4;
 }
 
 .contact_info p input {
-  width: 100%;
+  width: 90%;
   padding: 7px;
 }
 
-form {
+.action_btns {
   display: flex;
-  margin-left: auto;
+  margin: 0 auto;
 }
 
-form button:first-child {
+.action_btns button:first-child {
   margin-right: 6px;
 }
 </style>
