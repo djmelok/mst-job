@@ -13,6 +13,6 @@ export default {
 <style scoped>
 #app {
   display: flex;
-  padding: 32px;
+  padding: 28px;
 }
 </style>

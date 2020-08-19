@@ -82,7 +82,6 @@ export default {
   text-align: center;
   margin-bottom: 8px;
   padding: 8px 12px;
-  padding-right: 0;
 }
 
 .contact_info p {
