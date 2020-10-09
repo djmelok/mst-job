@@ -1,8 +1,8 @@
-### Тестовое задание на Vue.js
+# Тестовое задание на Vue.js
 
 >https://www.figma.com/file/yXeGSF4f0UTciZWfIYKdx9/MST-%7C-Frontend-Test---1?node-id=9%3A415
 
-==========================
+======
 
 #### Инструкция по запуску:
 
