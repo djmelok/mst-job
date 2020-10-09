@@ -3,10 +3,12 @@
     <header>
       <span class="header-logo">Первомайская</span>
       <nav>
-        <router-link to="./">О комплексе</router-link>
-        <router-link to="features">Особенности</router-link>
-        <router-link to="penthouses">Пентхаусы</router-link>
-        <router-link to="choose-apartment">Выбрать квартиру</router-link>
+        <router-link :to="base_url">О комплексе</router-link>
+        <router-link :to="base_url + 'features'">Особенности</router-link>
+        <router-link :to="base_url + 'penthouses'">Пентхаусы</router-link>
+        <router-link :to="base_url + 'choose-apartment'"
+          >Выбрать квартиру</router-link
+        >
       </nav>
       <span class="header-number">8 888 888 88 88</span>
     </header>
@@ -24,6 +26,16 @@
     </footer>
   </div>
 </template>
+
+<script>
+import { mapState } from "vuex";
+export default {
+  name: "MainLayout",
+  computed: {
+    ...mapState(["base_url"]),
+  },
+};
+</script> 
 
 <style lang="scss" scoped>
 .wrapper {
