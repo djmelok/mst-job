@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/mst-job/'
+    publicPath: '/mst-job/dist/'
 }
