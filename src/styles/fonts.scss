@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Gilroy';
+    src: local('Gilroy Light'), local('Gilroy-Light'),
+        url('~@/assets/fonts/Gilroy/Gilroy-Light.otf') format('opentype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy-ExtraBold';
+    src: local('Gilroy ExtraBold'), local('Gilroy-ExtraBold'),
+        url('~@/assets/fonts/Gilroy/Gilroy-ExtraBold.otf') format('opentype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: local('Roboto Regular'), local('Roboto-Regular'),
+        url('~@/assets/fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+    font-style: normal;
+}

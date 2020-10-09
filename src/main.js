@@ -3,7 +3,7 @@ import Vuelidate from 'vuelidate'
 import App from './App.vue'
 import store from './vuex/store.js'
 import router from './router/router.js'
-import '@/styles/main.css';
+import '@/styles/main.scss';
 
 Vue.config.productionTip = false
 

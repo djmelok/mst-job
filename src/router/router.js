@@ -1,55 +1,44 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import NotFoundComponent from '../components/NotFoundComponent.vue'
-import Main from '../components/_MainWrapper.vue'
-import SignIn from "../components/SignIn.vue";
-import SignUp from "../components/SignUp.vue";
+import vNotFoundComponent from '../views/v-not-found-component.vue'
 
 Vue.use(Router);
 
 let router = new Router({
     mode: 'history',
     routes: [{
-            path: '*',
-            component: NotFoundComponent
-        }, {
-            path: '/',
-            name: 'main',
-            component: Main,
-            beforeEnter: (to, from, next) => {
-                if (localStorage.login_status) {
-                    next();
-                } else {
-                    next('/sign_in');
-                }
-            }
+        path: '*',
+        name: 'v-not-found-component',
+        component: vNotFoundComponent
+    }, {
+        path: '/',
+        name: 'v-about-complex',
+        meta: {
+            layout: 'v-main-layout'
         },
-        {
-            path: '/sign_in',
-            name: 'sign_in',
-            component: SignIn,
-            beforeEnter: (to, from, next) => {
-                if (!localStorage.login_status) {
-                    next();
-                } else {
-                    next(false);
-                }
-            }
+        component: () => import('../views/v-about-complex.vue'),
+    }, {
+        path: '/features',
+        name: 'v-features',
+        meta: {
+            layout: 'v-main-layout'
         },
-        {
-            path: '/sign_up',
-            name: 'sign_up',
-            component: SignUp,
-            beforeEnter: (to, from, next) => {
-                if (!localStorage.login_status) {
-                    next();
-                } else {
-                    next(false);
-                }
-            }
-        }
-    ]
+        component: () => import('../views/v-features.vue'),
+    }, {
+        path: '/penthouses',
+        name: 'v-penthouses',
+        meta: {
+            layout: 'v-main-layout'
+        },
+        component: () => import('../views/v-penthouses.vue'),
+    }, {
+        path: '/choose-apartment',
+        name: 'v-choose-apartment',
+        meta: {
+            layout: 'v-main-layout'
+        },
+        component: () => import('../views/v-choose-apartment.vue'),
+    }]
 });
 
 export default router;
