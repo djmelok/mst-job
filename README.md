@@ -12,7 +12,11 @@
 > npm run serve
 
 Открыть проект в браузере:
-> http://localhost:8080/
+> http://localhost:8080/mst-job/dist/ 
+
+#### Или... GitHub Pages:
+
+> https://djmelok.github.io/mst-job/dist/
 
 #### Кроссбраузерность:
 В современных браузерах (кроме IE) всё работает адекватно.
