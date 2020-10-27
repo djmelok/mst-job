@@ -1,90 +1,58 @@
 <template>
   <div class="content-wrapper">
-    <aside>
-      <p
-        @click="setIdActiveSection(1)"
-        :class="{ active: id_active_section == 1 }"
-      >
-        Архитектура
-      </p>
-      <p
-        @click="setIdActiveSection(2)"
-        :class="{ active: id_active_section == 2 }"
-      >
-        Благоустройство
-      </p>
-      <p
-        @click="setIdActiveSection(3)"
-        :class="{ active: id_active_section == 3 }"
-      >
-        Безопастность
-      </p>
-      <p
-        @click="setIdActiveSection(4)"
-        :class="{ active: id_active_section == 4 }"
-      >
-        Инженерия
-      </p>
-      <p
-        @click="setIdActiveSection(5)"
-        :class="{ active: id_active_section == 5 }"
-      >
-        Инфраструктура
-      </p>
-      <p
-        @click="setIdActiveSection(6)"
-        :class="{ active: id_active_section == 6 }"
-      >
-        Транспортная доступность
-      </p>
+    <aside class="content-aside">
+      <ul>
+        <li v-for="(section, index) of sections" :key="section.id">
+          <a
+            :class="{ active: index_active_section == index }"
+            @click="setIndexActiveSection(index)"
+            :data-title="section.title"
+          >
+            {{ section.title }}
+          </a>
+        </li>
+      </ul>
     </aside>
     <section class="content-body">
       <div class="content-body__left">
         <div class="content-body__text">
           <transition
-            :name="id_prev_section > id_active_section ? 'text-revers' : 'text'"
+            :name="
+              index_prev_section > index_active_section ? 'text-revers' : 'text'
+            "
             mode="out-in"
           >
-            <component :is="getComponentName"></component>
+            <div :key="getActiveSection.id">
+              <h3>{{ getActiveSection.title }}</h3>
+              <p>
+                <span>{{ getActiveSection.content }} </span>
+                <router-link
+                  :to="base_url"
+                  class="ellipsis"
+                  :class="
+                    this.getActiveSection.content.length > letter_limit
+                      ? 'ellipsis_display'
+                      : ''
+                  "
+                  >...
+                </router-link>
+              </p>
+            </div>
           </transition>
-          <span class="content-body__pagination"
-            >{{ id_active_section }} / 6</span
-          >
+          <span class="content-body__pagination">
+            {{ index_active_section + 1 }} / {{ sections.length }}
+          </span>
         </div>
       </div>
       <div class="content-body__right">
         <transition
-          :name="id_prev_section > id_active_section ? 'image-revers' : 'image'"
+          :name="
+            index_prev_section > index_active_section ? 'image-revers' : 'image'
+          "
         >
           <div
-            v-if="id_active_section == 1"
-            :style="{ background: `url(${getPathImage})` }"
-            key="1"
-          ></div>
-          <div
-            v-else-if="id_active_section == 2"
-            :style="{ background: `url(${getPathImage})` }"
-            key="2"
-          ></div>
-          <div
-            v-else-if="id_active_section == 3"
-            :style="{ background: `url(${getPathImage})` }"
-            key="3"
-          ></div>
-          <div
-            v-else-if="id_active_section == 4"
-            :style="{ background: `url(${getPathImage})` }"
-            key="4"
-          ></div>
-          <div
-            v-else-if="id_active_section == 5"
-            :style="{ background: `url(${getPathImage})` }"
-            key="5"
-          ></div>
-          <div
-            v-else-if="id_active_section == 6"
-            :style="{ background: `url(${getPathImage})` }"
-            key="6"
+            :style="{ background: `url(${getActiveImageRequire})` }"
+            :key="getActiveSection.id"
           ></div>
         </transition>
       </div>
@@ -93,44 +61,39 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+import ImportSections from "@/sections.json";
+
 export default {
   name: "AboutComplex",
   data() {
     return {
-      id_active_section: 1,
-      id_prev_section: 1,
+      index_active_section: 1,
+      index_prev_section: 1,
+      sections: "",
     };
   },
+  created() {
+    this.sections = ImportSections;
+  },
+  mounted() {
+    this.TRIM_STRING_TO_LIMIT(this.getActiveSection.content);
+    this.getActiveSection.content = this.trimmed_string;
+  },
   computed: {
-    getPathImage() {
-      return require(`@/assets/images/illustrations/${this.id_active_section}.svg`);
+    ...mapState(["base_url", "letter_limit", "trimmed_string"]),
+    getActiveSection() {
+      return this.sections[this.index_active_section];
     },
-    getComponentName() {
-      let name = "v-architecture";
-      switch (this.id_active_section) {
-        case 2:
-          name = "v-landscaping";
-          break;
-        case 3:
-          name = "v-safety";
-          break;
-        case 4:
-          name = "v-engineering";
-          break;
-        case 5:
-          name = "v-infrastructure";
-          break;
-        case 6:
-          name = "v-transport-accessibility";
-          break;
-      }
-      return () => import(`../components/${name}`);
+    getActiveImageRequire() {
+      return require("@/assets/images/illustrations/" + this.getActiveSection.img);
     },
   },
   methods: {
-    setIdActiveSection(n) {
-      this.id_prev_section = this.id_active_section;
-      this.id_active_section = n;
+    ...mapMutations(["TRIM_STRING_TO_LIMIT"]),
+    setIndexActiveSection(n) {
+      this.index_prev_section = this.index_active_section;
+      this.index_active_section = n;
     },
   },
 };
@@ -144,48 +107,70 @@ export default {
   justify-content: space-between;
 }
 
-aside {
+.content-aside {
   display: flex;
   flex-direction: column;
 
-  p {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 13px;
-    line-height: 15px;
-    letter-spacing: 0.56px;
-    color: #505050;
-    margin-bottom: 32px;
-    margin-right: auto;
-    background-repeat: no-repeat;
-    background-image: linear-gradient(to bottom, transparent 20%, #ebd8cc 21%);
-    background-size: 100% 0;
-    background-position: 0 bottom;
-    transition: 0.25s;
-    padding: 0 4px;
-    cursor: pointer;
+  ul li {
+    margin-bottom: 27px;
 
     &:last-child {
       margin-bottom: 0;
     }
 
-    &:hover,
-    &.active {
-      font-weight: bold;
-      color: #262525;
-      background-size: 100% 9px;
-    }
+    a {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 13px;
+      line-height: 15px;
+      letter-spacing: 0.56px;
+      color: #505050;
+      background-repeat: no-repeat;
+      background-image: linear-gradient(
+        to bottom,
+        transparent 20%,
+        #ebd8cc 21%
+      );
+      background-size: 0 9px;
+      background-position: 0 5px;
+      transition: 0.25s;
+      padding: 0 2px;
+      cursor: pointer;
+      position: relative;
 
-    &.active {
-      font-size: 14px;
-      text-transform: uppercase;
+      &:hover {
+        font-weight: bold;
+        color: #262525;
+        background-size: 100% 9px;
+      }
+
+      &.active {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-size: 100% 9px;
+        color: transparent;
+      }
+
+      &.active:before {
+        content: attr(data-title);
+        position: absolute;
+        animation: transparent-color 0.25s forwards;
+        color: rgba(38, 37, 37, 0);
+      }
+
+      @keyframes transparent-color {
+        to {
+          color: rgba(38, 37, 37, 1);
+        }
+      }
     }
   }
 }
 
 .content-body {
-  width: 1516px;
+  width: 84.25%;
   height: 100%;
   margin-left: auto;
   display: flex;
@@ -204,34 +189,35 @@ aside {
   }
 
   &__text {
-    width: 435px;
+    width: 55%;
     height: 100%;
     display: flex;
     align-items: center;
     position: relative;
 
-    /deep/ h3 {
-      font-family: Gilroy-ExtraBold;
+    h3 {
+      font-family: Gilroy;
       font-size: 44px;
+      font-weight: bold;
       line-height: 53px;
+      margin-top: 0;
+      margin-bottom: 41px;
       letter-spacing: -0.02px;
       text-transform: uppercase;
       color: #262525;
     }
 
-    /deep/ p {
-      height: 90px;
+    p {
       font-family: Roboto;
       font-style: normal;
       font-weight: normal;
       font-size: 18px;
       line-height: 30px;
-      letter-spacing: -0.02px;
-      overflow: hidden;
+      letter-spacing: -0.2px;
       color: #262525;
     }
 
-    /deep/ .ellipsis {
+    .ellipsis {
       display: none;
       width: 28px;
       height: 28px;
@@ -245,15 +231,15 @@ aside {
       line-height: 50%;
     }
 
-    /deep/ .ellipsis.ellipsis_display {
+    .ellipsis.ellipsis_display {
       display: inline-block;
     }
   }
 
-  /deep/ &__pagination {
+  &__pagination {
     position: absolute;
-    left: 0;
-    bottom: 25%;
+    left: 1%;
+    bottom: 19%;
   }
 
   &__right {

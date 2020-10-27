@@ -3,13 +3,15 @@
     src: local('Gilroy Light'), local('Gilroy-Light'),
         url('~@/assets/fonts/Gilroy/Gilroy-Light.otf') format('opentype');
     font-style: normal;
+    font-weight: normal;
 }
 
 @font-face {
-    font-family: 'Gilroy-ExtraBold';
-    src: local('Gilroy ExtraBold'), local('Gilroy-ExtraBold'),
-        url('~@/assets/fonts/Gilroy/Gilroy-ExtraBold.otf') format('opentype');
+    font-family: 'Gilroy';
+    src: local('Gilroy Bold'), local('Gilroy-Bold'),
+        url('~@/assets/fonts/Gilroy/Gilroy-Bold.otf') format('opentype');
     font-style: normal;
+    font-weight: bold;
 }
 
 @font-face {

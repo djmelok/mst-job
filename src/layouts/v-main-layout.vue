@@ -1,18 +1,32 @@
 <template>
   <div class="wrapper">
-    <header>
-      <span class="header-logo">Первомайская</span>
+    <header class="header">
+      <router-link :to="base_url" class="header-primary-link header-logo">
+        Первомайская
+      </router-link>
       <nav>
-        <router-link :to="base_url">О комплексе</router-link>
-        <router-link :to="base_url + 'features'">Особенности</router-link>
-        <router-link :to="base_url + 'penthouses'">Пентхаусы</router-link>
-        <router-link :to="base_url + 'choose-apartment'"
-          >Выбрать квартиру</router-link
-        >
+        <ul>
+          <li>
+            <router-link :to="base_url">О комплексе </router-link>
+          </li>
+          <li>
+            <router-link :to="base_url + 'features'">Особенности</router-link>
+          </li>
+          <li>
+            <router-link :to="base_url + 'penthouses'">Пентхаусы</router-link>
+          </li>
+          <li>
+            <router-link :to="base_url + 'choose-apartment'">
+              Выбрать квартиру
+            </router-link>
+          </li>
+        </ul>
       </nav>
-      <span class="header-number">8 888 888 88 88</span>
+      <a :href="`tel:+${phone}`" class="header-primary-link header-number">
+        {{ phone }}
+      </a>
     </header>
-    <main>
+    <main class="main">
       <div class="square square-left"></div>
       <div class="square square-right">
         <img src="@/assets/images/icon-burger.svg" />
@@ -21,7 +35,7 @@
         <router-view />
       </transition>
     </main>
-    <footer>
+    <footer class="footer">
       <p>Разработано в MST <span>|</span> 2018</p>
     </footer>
   </div>
@@ -32,46 +46,65 @@ import { mapState } from "vuex";
 export default {
   name: "MainLayout",
   computed: {
-    ...mapState(["base_url"]),
+    ...mapState(["base_url", "phone"]),
   },
 };
 </script> 
 
 <style lang="scss" scoped>
 .wrapper {
-  max-width: 1800px;
+  max-width: 1802px;
   margin: 0 auto;
 }
 
-header {
+.header {
   display: flex;
+  position: relative;
 
-  span {
+  .header-primary-link {
     font-weight: bold;
     font-size: 17px;
     line-height: 21px;
     color: #262525;
     text-transform: uppercase;
+    text-decoration: none;
     margin-top: 22px;
   }
 
   .header-logo {
-    margin-left: 117px;
+    letter-spacing: 0.3px;
+    position: absolute;
+    left: 58px;
   }
 
   .header-number {
-    margin-right: 117px;
+    letter-spacing: 0.2px;
+    position: absolute;
+    right: 64px;
   }
 }
 
 nav {
   text-align: center;
-  margin: 20px auto;
+  margin: 20px auto 21px auto;
 
   &:hover,
   &:focus {
     background-size: 100% 4px;
     transition-delay: 0s;
+  }
+
+  ul li {
+    display: inline-block;
+    margin-right: 46px;
+
+    &:first-child {
+      margin-left: 7px;
+    }
+
+    &:last-child {
+      margin-right: 7px;
+    }
   }
 
   a {
@@ -82,22 +115,13 @@ nav {
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: 0.8px;
-    margin: 0 28px;
-    padding-bottom: 7px;
+    padding: 0 5px 10px 5px;
     white-space: nowrap;
     background-image: linear-gradient(to bottom, transparent 20%, #d88f5e 21%);
     background-repeat: no-repeat;
     transition: all 0.2s;
     background-size: 0% 4px;
     background-position: 0 bottom;
-
-    &:first-child {
-      margin-left: 7px;
-    }
-
-    &:last-child {
-      margin-right: 7px;
-    }
 
     &:hover,
     &:focus,
@@ -108,7 +132,7 @@ nav {
   }
 }
 
-main {
+.main {
   min-height: 840px;
   margin: 0 auto;
   position: relative;
@@ -141,14 +165,14 @@ main {
   }
 }
 
-footer {
-  margin: 22px 0;
+.footer {
+  margin: 23px 0;
 
   p {
     font-weight: 300;
     font-size: 13px;
     line-height: 15px;
-    letter-spacing: 0.175729px;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
 
     span {
