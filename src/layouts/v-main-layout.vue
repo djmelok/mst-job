@@ -29,7 +29,7 @@
     <main class="main">
       <div class="square square-left"></div>
       <div class="square square-right">
-        <img src="@/assets/images/icon-burger.svg" />
+        <img src="@/assets/images/icon-burger.png" />
       </div>
       <transition name="router" mode="out-in">
         <router-view />
